@@ -5,8 +5,8 @@ Payload details:
 1. POST: /api/identity-verification/initiate
 {
     "first_name":"chan",
-    "last_name":"sri",
-    "email":"chansri@in.com"
+    "last_name":"ani",
+    "email":"chanani@in.com"
 }
 
 2. POST: /api/identity-verification/check
