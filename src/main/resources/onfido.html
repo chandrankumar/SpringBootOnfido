@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Onfido SDK Integration</title>
+  
+  <!-- Load Onfido SDK -->
+  <script src="https://sdk.onfido.com/v14.11.0" charset="utf-8"></script>
+
+  <style>
+    #onfido-sdk-container {
+      width: 100%;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Onfido Identity Verification</h1>
+  
+  <button id="verifyButton">Start Identity Verification</button>
+  
+  <!-- Onfido SDK container -->
+  <div id="onfido-sdk-container"></div>
+  <script>
+    
+
+    // Initialize Onfido SDK
+    async function initOnfido() {
+      console.log("fetching token");
+         const onfidoApiToken = "eyJhbGciOiJFUzUxMiJ9.eyJleHAiOjE3NTU2MTIwNjEsInBheWxvYWQiOnsiYXBwIjoiYmVlNDI3NGItZWMyMy00MWViLWE2ZWMtZjExYzM5OGNmNTI0IiwiY2xpZW50X3V1aWQiOiI5ZDE3OTg3ZC03NjEwLTQ1MDAtYTljYy00ODY4ZWJjYjk2MjEiLCJpc19zYW5kYm94Ijp0cnVlLCJpc19zZWxmX3NlcnZpY2VfdHJpYWwiOmZhbHNlLCJpc190cmlhbCI6ZmFsc2UsInNhcmRpbmVfc2Vzc2lvbiI6ImI1ZTVlNTcwLTAzOGMtNDdhMy05MTc3LTc2ZjU4YTYwNjUyYiJ9LCJ1dWlkIjoicGxhdGZvcm1fc3RhdGljX2FwaV90b2tlbl91dWlkIiwiZW50ZXJwcmlzZV9mZWF0dXJlcyI6eyJ2YWxpZENyb3NzRGV2aWNlVXJscyI6WyIiXX0sInVybHMiOnsiZGV0ZWN0X2RvY3VtZW50X3VybCI6Imh0dHBzOi8vc2RrLm9uZmlkby5jb20iLCJzeW5jX3VybCI6Imh0dHBzOi8vc3luYy5vbmZpZG8uY29tIiwiaG9zdGVkX3Nka191cmwiOiJodHRwczovL2lkLm9uZmlkby5jb20iLCJhdXRoX3VybCI6Imh0dHBzOi8vYXBpLm9uZmlkby5jb20iLCJvbmZpZG9fYXBpX3VybCI6Imh0dHBzOi8vYXBpLm9uZmlkby5jb20iLCJ0ZWxlcGhvbnlfdXJsIjoiaHR0cHM6Ly9hcGkub25maWRvLmNvbSJ9fQ.MIGIAkIB4eu2_CSn8Uopdw6D9DCiJlcLns0944vls43TsZE2yTakAaC_hRfv6NaTZ4VOItlWBeLPRvQxZUDpOJYaJz3mbnQCQgG0slE8rDVt0MWKoozP232FAZ9n-auEN0KUV3rmtaOLLdoi84bV24pzxANnH6nXTiXpeNxeU9BrohafIzoMoEHwaQ"
+          if (!onfidoApiToken) {
+        console.error('Unable to fetch Onfido API token');
+        return;
+      }
+
+      // Initialize Onfido SDK
+      Onfido.init({
+        token: onfidoApiToken,
+        containerId: 'onfido-sdk-container', // Specify the container for Onfido UI
+        onComplete: function(data) {
+          console.log('Verification completed', data);
+          alert('Verification complete!');
+        },
+        onError: function(error) {
+          console.log('An error occurred', error);
+          alert('Error during verification.');
+        },
+        onClose: function() {
+          console.log('Verification process closed');
+        },
+        //steps: ['welcome', 'document', 'face', 'complete'],
+        // workflowRunId: "3bdbd532-8c44-4193-ba21-0433c9e1d0da",
+        // roomId: 1
+		steps: ['welcome','document',
+          {
+            type: 'face',
+            options: {
+				requestedVariant: 'motion'
+			}
+          },
+          'complete'
+        ]
+      });
+    }
+    document.getElementById('verifyButton').addEventListener('click', initOnfido);
+  </script>
+  
+</body>
+</html>
